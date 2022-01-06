@@ -3,6 +3,8 @@ import { useState } from 'react';
 // import { useContext } from 'react';
 // import { GlobalContext } from 'context/GlobalContext';
 
+// import propTypes from 'prop-types';
+
 import { toast } from 'react-toastify';
 import { ImSearch } from 'react-icons/im';
 

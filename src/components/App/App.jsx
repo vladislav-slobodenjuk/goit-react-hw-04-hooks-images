@@ -28,9 +28,7 @@ export default function App() {
   };
 
   return (
-    <GlobalContext.Provider
-      value={{ searchString, setSearchString, handleFormSubmit }}
-    >
+    <GlobalContext.Provider value={{ modalImage, modalAlt, toggleModal }}>
       <div className={s.app}>
         {showModal && (
           <Modal src={modalImage} alt={modalAlt} onClose={toggleModal} />
