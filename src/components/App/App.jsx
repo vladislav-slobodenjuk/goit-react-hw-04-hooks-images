@@ -1,5 +1,6 @@
 // import { Component } from 'react';
 import { useState } from 'react';
+import { GlobalContext } from 'context/GlobalContext';
 
 import Searchbar from 'components/Searchbar/Searchbar';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
@@ -27,14 +28,18 @@ export default function App() {
   };
 
   return (
-    <div className={s.app}>
-      {showModal && (
-        <Modal src={modalImage} alt={modalAlt} onClose={toggleModal} />
-      )}
-      <Searchbar onSubmit={handleFormSubmit} />
-      <ImageGallery searchString={searchString} toggleModal={toggleModal} />
-      <ToastContainer autoClose={4000} theme="colored" transition={Zoom} />
-    </div>
+    <GlobalContext.Provider
+      value={{ searchString, setSearchString, handleFormSubmit }}
+    >
+      <div className={s.app}>
+        {showModal && (
+          <Modal src={modalImage} alt={modalAlt} onClose={toggleModal} />
+        )}
+        <Searchbar onSubmit={handleFormSubmit} />
+        <ImageGallery searchString={searchString} toggleModal={toggleModal} />
+        <ToastContainer autoClose={4000} theme="colored" transition={Zoom} />
+      </div>
+    </GlobalContext.Provider>
   );
 }
 
