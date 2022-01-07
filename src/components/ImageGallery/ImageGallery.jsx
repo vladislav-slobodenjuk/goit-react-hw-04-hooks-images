@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 // import propTypes from 'prop-types';
 import axiosFetch from 'services/pixabayAPI';
 import { toast } from 'react-toastify';
@@ -11,7 +12,118 @@ import Button from 'components/Button/Button';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-export default class ImageGallery extends Component {
+export default function ImageGallery(props) {
+  const { searchString } = props;
+
+  const [imageArray, setImageArray] = useState([]);
+  const [status, setStatus] = useState('idle');
+  const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+
+  const incrPage = () => {
+    // this.setState(prevState => ({
+    //   page: prevState.page + 1,
+    // }));
+    // setPage(prev => prev + 1);
+    setPage(page + 1);
+  };
+
+  useEffect(() => {
+    if (searchString === '') {
+      // stop effect at mount
+      return;
+    }
+
+    if (searchString.length < 3) {
+      toast.warn('Запрос слишком короткий');
+      return;
+    }
+
+    setStatus('pending');
+    setPage(1);
+
+    (async () => {
+      try {
+        const fetchResult = await axiosFetch(searchString);
+
+        if (fetchResult.length === 0) {
+          toast.warn('Ничего не нашли :(');
+          throw new Error(`По запросу ${searchString} ничего нет`);
+        }
+
+        // this.setState({
+        //   imageArray: [...fetchResult],
+        //   status: 'resolved',
+        // });
+        setImageArray([...fetchResult]);
+        setStatus('resolved');
+
+        toast.success('Ура, нашли!');
+        //
+      } catch (error) {
+        console.log(error);
+        // this.setState({ error, status: 'rejected' });
+        setError(error);
+        setStatus('rejected');
+      }
+    })();
+  }, [searchString]);
+
+  useEffect(() => {
+    if (searchString === '' || page === 1) {
+      // stop effect at mount
+      return;
+    }
+
+    setStatus('pending');
+
+    (async () => {
+      try {
+        const fetchResult = await axiosFetch(searchString, page);
+
+        if (fetchResult.length === 0 && page !== 1) {
+          toast.warn('Больше ничего нет, это все :(');
+          setStatus('resolved');
+          return;
+        }
+
+        // this.setState(prevState => ({
+        //   imageArray: [...prevState.imageArray, ...result],
+        //   status: 'resolved',
+        // }));
+        // toast.success('Ура, еще нашли!');
+        setImageArray(prev => [...prev, ...fetchResult]);
+        setStatus('resolved');
+
+        toast.success('Ура, нашли еще!');
+        //
+      } catch (error) {
+        console.log(error);
+        // this.setState({ error, status: 'rejected' });
+        setError(error);
+        setStatus('rejected');
+      }
+    })();
+  }, [page]);
+
+  return (
+    <>
+      {status === 'idle' && <ImageGalleryIdleView />}
+      {status === 'pending' && <ImageGalleryPendingView />}
+      {status === 'rejected' && (
+        <ImageGalleryErrorView message={error.message} />
+      )}
+      {status === 'resolved' && (
+        <>
+          <ImageGalleryDataView imageArray={imageArray} />
+          <Button pageDown={incrPage} />;
+        </>
+      )}
+    </>
+  );
+}
+
+class oldImageGallery extends Component {
   state = {
     imageArray: [],
     error: null,

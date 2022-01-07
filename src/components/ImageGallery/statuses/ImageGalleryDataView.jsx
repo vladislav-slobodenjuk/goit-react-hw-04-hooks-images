@@ -1,10 +1,9 @@
-import React from 'react';
 // import propTypes from 'prop-types';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
 
 import s from './../ImageGallery.module.scss';
 
-export default function ImageGalleryDataView({ imageArray, toggleModal }) {
+export default function ImageGalleryDataView({ imageArray }) {
   return (
     <ul className={s.gallery}>
       {imageArray.map(image => {
@@ -17,7 +16,6 @@ export default function ImageGalleryDataView({ imageArray, toggleModal }) {
             largeImageURL={largeImageURL}
             id={id}
             user={user}
-            toggleModal={toggleModal}
           />
         );
       })}

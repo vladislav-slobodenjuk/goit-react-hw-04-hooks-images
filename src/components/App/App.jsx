@@ -32,9 +32,10 @@ export default function App() {
       <div className={s.app}>
         {showModal && (
           <Modal src={modalImage} alt={modalAlt} onClose={toggleModal} />
+          // можно убрать пропы
         )}
         <Searchbar onSubmit={handleFormSubmit} />
-        <ImageGallery searchString={searchString} toggleModal={toggleModal} />
+        <ImageGallery searchString={searchString} />
         <ToastContainer autoClose={4000} theme="colored" transition={Zoom} />
       </div>
     </GlobalContext.Provider>
