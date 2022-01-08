@@ -18,7 +18,6 @@ export default function Searchbar(props) {
   // const { handleFormSubmit } = useContext(GlobalContext);
 
   const handleInputChange = e => {
-    // this.setState({ searchInput: e.currentTarget.value.toLowerCase() });
     setSearchInput(e.currentTarget.value.toLowerCase());
   };
 
@@ -27,14 +26,12 @@ export default function Searchbar(props) {
 
     if (searchInput.trim() === '') {
       //!!! trim
-      // alert('zero string');
       toast.error('Введите что будем искать');
       return;
     }
 
     // this.props.onSubmit(this.state.searchInput.trim()); // !!! trim
     onSubmit(searchInput.trim()); // !!! trim
-    // this.setState({ searchInput: '' });
     setSearchInput('');
   };
 

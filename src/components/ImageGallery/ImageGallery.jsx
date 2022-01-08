@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 // import propTypes from 'prop-types';
 import axiosFetch from 'services/pixabayAPI';
 import { toast } from 'react-toastify';
+// import scrollIntoView from 'scroll-into-view-if-needed';
 
 import ImageGalleryIdleView from './statuses/ImageGalleryIdleView';
 import ImageGalleryPendingView from './statuses/ImageGalleryPendingView';
@@ -11,6 +12,13 @@ import ImageGalleryDataView from './statuses/ImageGalleryDataView';
 import Button from 'components/Button/Button';
 
 import 'react-toastify/dist/ReactToastify.css';
+
+// const node = document.getElementById('AddButton');
+
+// scrollIntoView(node, {
+//   behavior: 'smooth',
+//   scrollMode: 'if-needed',
+// });
 
 export default function ImageGallery(props) {
   const { searchString } = props;
@@ -21,9 +29,6 @@ export default function ImageGallery(props) {
   const [page, setPage] = useState(1);
 
   const incrPage = () => {
-    // this.setState(prevState => ({
-    //   page: prevState.page + 1,
-    // }));
     // setPage(prev => prev + 1);
     setPage(page + 1);
   };
@@ -44,17 +49,13 @@ export default function ImageGallery(props) {
 
     (async () => {
       try {
-        const fetchResult = await axiosFetch(searchString);
+        const fetchResult = await axiosFetch(searchString, page);
 
         if (fetchResult.length === 0) {
           toast.warn('Ничего не нашли :(');
           throw new Error(`По запросу ${searchString} ничего нет`);
         }
 
-        // this.setState({
-        //   imageArray: [...fetchResult],
-        //   status: 'resolved',
-        // });
         setImageArray([...fetchResult]);
         setStatus('resolved');
 
@@ -62,7 +63,6 @@ export default function ImageGallery(props) {
         //
       } catch (error) {
         console.log(error);
-        // this.setState({ error, status: 'rejected' });
         setError(error);
         setStatus('rejected');
       }
