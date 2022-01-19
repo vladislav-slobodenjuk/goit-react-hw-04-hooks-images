@@ -3,8 +3,10 @@ import React from 'react';
 const style = {
   display: 'flex',
   justifyContent: 'center',
+  fontSize: 24,
+  fontWeight: 'bold',
 };
 
 export default function ImageGalleryIdleView() {
-  return <h2 style={style}>Введите имя поиска</h2>;
+  return <p style={style}>Введите имя поиска</p>;
 }

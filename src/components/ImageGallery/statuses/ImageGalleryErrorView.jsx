@@ -1,5 +1,4 @@
-import React from 'react';
-// import propTypes from 'prop-types';
+import propTypes from 'prop-types';
 import errorImage from 'images/error.jpg';
 
 export default function ImageGalleryErrorView({ message }) {
@@ -9,10 +8,16 @@ export default function ImageGalleryErrorView({ message }) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        fontSize: 24,
+        fontWeight: 'bold',
       }}
     >
-      <h1>{message}</h1>
+      <p>{message}</p>
       <img src={errorImage} alt="sadCat" width="240" />
     </div>
   );
 }
+
+ImageGalleryErrorView.propTypes = {
+  message: propTypes.string.isRequired,
+};
