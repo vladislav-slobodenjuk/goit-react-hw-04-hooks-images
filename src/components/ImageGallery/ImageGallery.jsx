@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { useState, useEffect } from 'react';
+// import { useContext } from 'react';
+
+// import { GlobalContext } from 'context/GlobalContext';
+
 // import propTypes from 'prop-types';
 import axiosFetch from 'services/pixabayAPI';
 import { toast } from 'react-toastify';
@@ -13,20 +17,15 @@ import Button from 'components/Button/Button';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-// const node = document.getElementById('AddButton');
-
-// scrollIntoView(node, {
-//   behavior: 'smooth',
-//   scrollMode: 'if-needed',
-// });
-
 export default function ImageGallery(props) {
-  const { searchString } = props;
+  const { searchString, page, setPage } = props;
 
   const [imageArray, setImageArray] = useState([]);
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState(null);
-  const [page, setPage] = useState(1);
+  // const { page, setPage } = useContext(GlobalContext);
+
+  // const [page, setPage] = useState(1);
 
   const incrPage = () => {
     // setPage(prev => prev + 1);
@@ -45,7 +44,6 @@ export default function ImageGallery(props) {
     }
 
     setStatus('pending');
-    setPage(1);
 
     (async () => {
       try {

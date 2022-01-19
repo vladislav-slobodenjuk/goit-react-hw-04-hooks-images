@@ -16,6 +16,7 @@ export default function App() {
   const [showModal, setShowModal] = useState(false);
   const [modalImage, setModalImage] = useState('');
   const [modalAlt, setModalAlt] = useState('');
+  const [page, setPage] = useState(1);
 
   const handleFormSubmit = data => {
     setSearchString(data);
@@ -27,15 +28,21 @@ export default function App() {
     setModalAlt(alt);
   };
 
+  const contextValues = { modalImage, modalAlt, toggleModal };
+
   return (
-    <GlobalContext.Provider value={{ modalImage, modalAlt, toggleModal }}>
+    <GlobalContext.Provider value={contextValues}>
       <div className={s.app}>
         {showModal && (
           <Modal src={modalImage} alt={modalAlt} onClose={toggleModal} />
           // можно убрать пропы
         )}
         <Searchbar onSubmit={handleFormSubmit} />
-        <ImageGallery searchString={searchString} />
+        <ImageGallery
+          searchString={searchString}
+          page={page}
+          setPage={setPage}
+        />
         <ToastContainer autoClose={4000} theme="colored" transition={Zoom} />
       </div>
     </GlobalContext.Provider>
