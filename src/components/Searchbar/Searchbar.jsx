@@ -1,8 +1,5 @@
 import { useState } from 'react';
-// import { useContext } from 'react';
-// import { GlobalContext } from 'context/GlobalContext';
-
-// import propTypes from 'prop-types';
+import propTypes from 'prop-types';
 
 import { toast } from 'react-toastify';
 import { ImSearch } from 'react-icons/im';
@@ -13,15 +10,12 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function Searchbar({ onSubmit }) {
   const [searchInput, setSearchInput] = useState('');
 
-  // const { handleFormSubmit } = useContext(GlobalContext);
-
   const handleInputChange = e => {
     setSearchInput(e.currentTarget.value.toLowerCase());
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-
     const isEmptyString = searchInput.trim() === '';
 
     if (isEmptyString) {
@@ -29,7 +23,6 @@ export default function Searchbar({ onSubmit }) {
       return;
     }
 
-    // this.props.onSubmit(this.state.searchInput.trim()); // !!! trim
     onSubmit(searchInput.trim());
     setSearchInput('');
   };
@@ -38,7 +31,6 @@ export default function Searchbar({ onSubmit }) {
     <header className={s.searchBar}>
       <form className={s.searchForm} onSubmit={handleSubmit}>
         <button type="submit" className={s.searchFormButton}>
-          {/* <span className={s.searchFormButtonLabel}>Search</span> */}
           <ImSearch />
         </button>
 
@@ -49,7 +41,7 @@ export default function Searchbar({ onSubmit }) {
           autoFocus
           placeholder="Search images and photos"
           name="search"
-          value={searchInput} // !!!
+          value={searchInput}
           onChange={handleInputChange}
         />
       </form>
@@ -57,50 +49,6 @@ export default function Searchbar({ onSubmit }) {
   );
 }
 
-// class oldSearchbar extends PureComponent {
-//   state = {
-//     searchString: '',
-//   };
-
-//   handleInputChange = e => {
-//     this.setState({ searchString: e.currentTarget.value.toLowerCase() });
-//   };
-
-//   handleSubmit = e => {
-//     e.preventDefault();
-
-//     if (this.state.searchString.trim() === '') {
-//       //!!! trim
-//       // alert('zero string');
-//       toast.error('Введите что будем искать');
-//       return;
-//     }
-
-//     this.props.onSubmit(this.state.searchString.trim()); // !!! trim
-//     this.setState({ searchString: '' });
-//   };
-
-//   render() {
-//     return (
-//       <header className={s.searchBar}>
-//         <form className={s.searchForm} onSubmit={this.handleSubmit}>
-//           <button type="submit" className={s.searchFormButton}>
-//             {/* <span className={s.searchFormButtonLabel}>Search</span> */}
-//             <ImSearch />
-//           </button>
-
-//           <input
-//             className={s.searchFormInput}
-//             type="text"
-//             autoComplete="off"
-//             autoFocus
-//             placeholder="Search images and photos"
-//             name="search"
-//             value={this.state.searchString} // !!!
-//             onChange={this.handleInputChange}
-//           />
-//         </form>
-//       </header>
-//     );
-//   }
-// }
+Searchbar.propTypes = {
+  onSubmit: propTypes.func.isRequired,
+};

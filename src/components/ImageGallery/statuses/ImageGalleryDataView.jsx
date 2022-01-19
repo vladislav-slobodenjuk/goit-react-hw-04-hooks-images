@@ -1,4 +1,4 @@
-// import propTypes from 'prop-types';
+import propTypes from 'prop-types';
 import ImageGalleryItem from 'components/ImageGallery/ImageGalleryItem/ImageGalleryItem';
 
 import s from './../ImageGallery.module.scss';
@@ -22,3 +22,7 @@ export default function ImageGalleryDataView({ imageArray }) {
     </ul>
   );
 }
+
+ImageGalleryDataView.propTypes = {
+  imageArray: propTypes.array.isRequired,
+};

@@ -34,8 +34,12 @@ export default function App() {
     <GlobalContext.Provider value={contextValues}>
       <div className={s.app}>
         {showModal && (
-          <Modal src={modalImage} alt={modalAlt} onClose={toggleModal} />
+          <Modal
+          // src={modalImage}
+          // alt={modalAlt}
+          // onClose={toggleModal}
           // можно убрать пропы
+          />
         )}
         <Searchbar onSubmit={handleFormSubmit} />
         <ImageGallery
