@@ -1,5 +1,5 @@
 // import propTypes from 'prop-types';
-import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
+import ImageGalleryItem from 'components/ImageGallery/ImageGalleryItem/ImageGalleryItem';
 
 import s from './../ImageGallery.module.scss';
 

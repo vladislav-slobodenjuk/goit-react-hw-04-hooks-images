@@ -1,4 +1,3 @@
-// import { Component } from 'react';
 import { useState } from 'react';
 import { GlobalContext } from 'context/GlobalContext';
 
@@ -20,6 +19,7 @@ export default function App() {
 
   const handleFormSubmit = data => {
     setSearchString(data);
+    setPage(1);
   };
 
   const toggleModal = (largeImageURL, alt) => {
@@ -48,44 +48,3 @@ export default function App() {
     </GlobalContext.Provider>
   );
 }
-
-// class oldApp extends Component {
-//   state = {
-//     searchString: '',
-//     showModal: false,
-//     modalImage: '',
-//     modalAlt: '',
-//   };
-
-//   handleFormSubmit = data => {
-//     this.setState({ searchString: data });
-//   };
-
-//   toggleModal = (largeImageURL, alt) => {
-//     this.setState(({ showModal }) => ({
-//       showModal: !showModal,
-//       modalImage: largeImageURL,
-//       modalAlt: alt,
-//     }));
-//   };
-
-//   render() {
-//     const { searchString, showModal, modalImage, modalAlt } = this.state;
-
-//     return (
-//       <div className={s.app}>
-//         {showModal && (
-//           <Modal src={modalImage} alt={modalAlt} onClose={this.toggleModal} />
-//         )}
-//         <Searchbar onSubmit={this.handleFormSubmit} />
-//         <ImageGallery
-//           searchString={searchString}
-//           toggleModal={this.toggleModal}
-//         />
-//         <ToastContainer autoClose={4000} theme="colored" transition={Zoom} />
-//       </div>
-//     );
-//   }
-// }
-
-// export default App;

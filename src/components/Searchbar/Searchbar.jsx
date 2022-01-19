@@ -1,4 +1,3 @@
-// import React, { PureComponent } from 'react';
 import { useState } from 'react';
 // import { useContext } from 'react';
 // import { GlobalContext } from 'context/GlobalContext';
@@ -11,8 +10,7 @@ import { ImSearch } from 'react-icons/im';
 import s from './Searchbar.module.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function Searchbar(props) {
-  const { onSubmit } = props;
+export default function Searchbar({ onSubmit }) {
   const [searchInput, setSearchInput] = useState('');
 
   // const { handleFormSubmit } = useContext(GlobalContext);
@@ -24,14 +22,15 @@ export default function Searchbar(props) {
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (searchInput.trim() === '') {
-      //!!! trim
+    const isEmptyString = searchInput.trim() === '';
+
+    if (isEmptyString) {
       toast.error('Введите что будем искать');
       return;
     }
 
     // this.props.onSubmit(this.state.searchInput.trim()); // !!! trim
-    onSubmit(searchInput.trim()); // !!! trim
+    onSubmit(searchInput.trim());
     setSearchInput('');
   };
 

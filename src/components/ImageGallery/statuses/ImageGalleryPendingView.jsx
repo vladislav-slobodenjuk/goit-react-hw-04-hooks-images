@@ -10,14 +10,14 @@ const style = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  backgroundColor: 'rgba(0, 0, 0, 0.05)',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
   zIndex: '1200',
 };
 
 export default function ImageGalleryPendingView() {
   return (
     <div style={style}>
-      <Loader type="Bars" color="#3f51b5" height={80} width={80} />
+      <Loader type="Bars" color="#FFF" height={200} width={200} />
     </div>
   );
 }

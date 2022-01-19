@@ -1,10 +1,7 @@
-import React, { Component } from 'react';
+// import React, { Component } from 'react';
 import { useState, useEffect } from 'react';
-// import { useContext } from 'react';
-
-// import { GlobalContext } from 'context/GlobalContext';
-
 // import propTypes from 'prop-types';
+
 import axiosFetch from 'services/pixabayAPI';
 import { toast } from 'react-toastify';
 // import scrollIntoView from 'scroll-into-view-if-needed';
@@ -49,60 +46,75 @@ export default function ImageGallery(props) {
       try {
         const fetchResult = await axiosFetch(searchString, page);
 
-        if (fetchResult.length === 0) {
-          toast.warn('Ничего не нашли :(');
-          throw new Error(`По запросу ${searchString} ничего нет`);
-        }
-
-        setImageArray([...fetchResult]);
-        setStatus('resolved');
-
-        toast.success('Ура, нашли!');
-        //
-      } catch (error) {
-        console.log(error);
-        setError(error);
-        setStatus('rejected');
-      }
-    })();
-  }, [searchString]);
-
-  useEffect(() => {
-    if (searchString === '' || page === 1) {
-      // stop effect at mount
-      return;
-    }
-
-    setStatus('pending');
-
-    (async () => {
-      try {
-        const fetchResult = await axiosFetch(searchString, page);
-
         if (fetchResult.length === 0 && page !== 1) {
+          //
           toast.warn('Больше ничего нет, это все :(');
           setStatus('resolved');
           return;
         }
 
-        // this.setState(prevState => ({
-        //   imageArray: [...prevState.imageArray, ...result],
-        //   status: 'resolved',
-        // }));
-        // toast.success('Ура, еще нашли!');
+        if (fetchResult.length === 0) {
+          toast.warn('Ничего не нашли :(');
+          setImageArray([]);
+          throw new Error(`По запросу ${searchString} ничего нет`);
+        }
+
+        if (page === 1) {
+          setImageArray([...fetchResult]);
+          setStatus('resolved');
+          toast.success('Ура, нашли!');
+          return;
+        }
+
         setImageArray(prev => [...prev, ...fetchResult]);
         setStatus('resolved');
-
         toast.success('Ура, нашли еще!');
         //
       } catch (error) {
-        console.log(error);
-        // this.setState({ error, status: 'rejected' });
+        // console.log(error);
         setError(error);
         setStatus('rejected');
       }
     })();
-  }, [page]);
+  }, [searchString, page]);
+
+  // useEffect(() => {
+  //   return;
+  //   if (searchString === '' || page === 1) {
+  //     // stop effect at mount
+  //     return;
+  //   }
+
+  //   setStatus('pending');
+
+  //   (async () => {
+  //     try {
+  //       const fetchResult = await axiosFetch(searchString, page);
+
+  //       if (fetchResult.length === 0 && page !== 1) {
+  //         toast.warn('Больше ничего нет, это все :(');
+  //         setStatus('resolved');
+  //         return;
+  //       }
+
+  //       // this.setState(prevState => ({
+  //       //   imageArray: [...prevState.imageArray, ...result],
+  //       //   status: 'resolved',
+  //       // }));
+  //       // toast.success('Ура, еще нашли!');
+  //       setImageArray(prev => [...prev, ...fetchResult]);
+  //       setStatus('resolved');
+
+  //       toast.success('Ура, нашли еще!');
+  //       //
+  //     } catch (error) {
+  //       console.log(error);
+  //       // this.setState({ error, status: 'rejected' });
+  //       setError(error);
+  //       setStatus('rejected');
+  //     }
+  //   })();
+  // }, [page]);
 
   return (
     <>
@@ -111,7 +123,7 @@ export default function ImageGallery(props) {
       {status === 'rejected' && (
         <ImageGalleryErrorView message={error.message} />
       )}
-      {status === 'resolved' && (
+      {(status === 'resolved' || status === 'pending') && (
         <>
           <ImageGalleryDataView imageArray={imageArray} />
           <Button pageDown={incrPage} />;
@@ -121,109 +133,109 @@ export default function ImageGallery(props) {
   );
 }
 
-class oldImageGallery extends Component {
-  state = {
-    imageArray: [],
-    error: null,
-    status: 'idle',
-    page: 1,
-  };
+// class oldImageGallery extends Component {
+//   state = {
+//     imageArray: [],
+//     error: null,
+//     status: 'idle',
+//     page: 1,
+//   };
 
-  async componentDidUpdate(prevProps, prevState) {
-    const prevSearch = prevProps.searchString;
-    const nextSearch = this.props.searchString;
-    const prevPage = prevState.page;
-    const nextPage = this.state.page;
+//   async componentDidUpdate(prevProps, prevState) {
+//     const prevSearch = prevProps.searchString;
+//     const nextSearch = this.props.searchString;
+//     const prevPage = prevState.page;
+//     const nextPage = this.state.page;
 
-    if (prevSearch !== nextSearch) {
-      this.setState({ status: 'pending', page: 1 });
+//     if (prevSearch !== nextSearch) {
+//       this.setState({ status: 'pending', page: 1 });
 
-      try {
-        const fetchResult = await axiosFetch(nextSearch, nextPage);
+//       try {
+//         const fetchResult = await axiosFetch(nextSearch, nextPage);
 
-        if (fetchResult.length === 0) {
-          throw (
-            (new Error(`По запросу ${nextSearch} ничего нет`),
-            toast.warn('Ничего не нашли :('))
-          );
-        }
+//         if (fetchResult.length === 0) {
+//           throw (
+//             (new Error(`По запросу ${nextSearch} ничего нет`),
+//             toast.warn('Ничего не нашли :('))
+//           );
+//         }
 
-        this.setState({
-          imageArray: [...fetchResult],
-          status: 'resolved',
-        });
-        toast.success('Ура, нашли!');
-      } catch (error) {
-        console.log(error);
-        this.setState({ error, status: 'rejected' });
-      }
+//         this.setState({
+//           imageArray: [...fetchResult],
+//           status: 'resolved',
+//         });
+//         toast.success('Ура, нашли!');
+//       } catch (error) {
+//         console.log(error);
+//         this.setState({ error, status: 'rejected' });
+//       }
 
-      //   axiosFetch(nextSearch, nextPage)
-      //     .then(result => {
-      //       if (result.length === 0) {
-      //         return Promise.reject(
-      //           new Error(`По запросу ${nextSearch} ничего нет`),
-      //           toast.warn('Ничего не нашли :('),
-      //         );
-      //       }
+//       //   axiosFetch(nextSearch, nextPage)
+//       //     .then(result => {
+//       //       if (result.length === 0) {
+//       //         return Promise.reject(
+//       //           new Error(`По запросу ${nextSearch} ничего нет`),
+//       //           toast.warn('Ничего не нашли :('),
+//       //         );
+//       //       }
 
-      //   this.setState({
-      //     imageArray: [...result],
-      //     status: 'resolved',
-      //   });
-      //   toast.success('Ура, нашли!');
-      // })
-      //     .catch(error => this.setState({ error, status: 'rejected' }));
-    }
+//       //   this.setState({
+//       //     imageArray: [...result],
+//       //     status: 'resolved',
+//       //   });
+//       //   toast.success('Ура, нашли!');
+//       // })
+//       //     .catch(error => this.setState({ error, status: 'rejected' }));
+//     }
 
-    if (prevPage !== nextPage) {
-      this.setState({ status: 'pending' });
+//     if (prevPage !== nextPage) {
+//       this.setState({ status: 'pending' });
 
-      axiosFetch(nextSearch, nextPage)
-        .then(result => {
-          if (result.length === 0) {
-            return Promise.reject(
-              new Error(`По запросу ${nextSearch} ничего нет`),
-              toast.warn('Ничего не нашли :('),
-            );
-          }
+//       axiosFetch(nextSearch, nextPage)
+//         .then(result => {
+//           if (result.length === 0) {
+//             return Promise.reject(
+//               new Error(`По запросу ${nextSearch} ничего нет`),
+//               toast.warn('Ничего не нашли :('),
+//             );
+//           }
 
-          this.setState(prevState => ({
-            imageArray: [...prevState.imageArray, ...result],
-            status: 'resolved',
-          }));
-          toast.success('Ура, еще нашли!');
-        })
-        .catch(error => this.setState({ error, status: 'rejected' }));
-    }
-  }
+//           this.setState(prevState => ({
+//             imageArray: [...prevState.imageArray, ...result],
+//             status: 'resolved',
+//           }));
+//           toast.success('Ура, еще нашли!');
+//         })
+//         .catch(error => this.setState({ error, status: 'rejected' }));
+//     }
+//   }
 
-  incrPage = () => {
-    this.setState(prevState => ({
-      page: prevState.page + 1,
-    }));
-  };
+//   incrPage = () => {
+//     this.setState(prevState => ({
+//       page: prevState.page + 1,
+//     }));
+//   };
 
-  render() {
-    const { imageArray, error, status } = this.state;
+//   render() {
+//     const { imageArray, error, status } = this.state;
 
-    return (
-      <>
-        {status === 'idle' && <ImageGalleryIdleView />}
-        {status === 'pending' && <ImageGalleryPendingView />}
-        {status === 'rejected' && (
-          <ImageGalleryErrorView message={error.message} />
-        )}
-        {status === 'resolved' && (
-          <>
-            <ImageGalleryDataView
-              imageArray={imageArray}
-              toggleModal={this.props.toggleModal}
-            />
-            <Button pageDown={this.incrPage} />;
-          </>
-        )}
-      </>
-    );
-  }
-}
+//     return (
+//       <>
+//         {status === 'idle' && <ImageGalleryIdleView />}
+//         {status === 'pending' && <ImageGalleryPendingView />}
+//         {status === 'rejected' && (
+//           <ImageGalleryErrorView message={error.message} />
+//         )}
+//         {status === 'resolved' && (
+//           <>
+//             <ImageGalleryDataView
+//               imageArray={imageArray}
+//               toggleModal={this.props.toggleModal}
+//             />
+//             <Button pageDown={this.incrPage} />;
+//           </>
+//         )}
+//       </>
+//     );
+//   }
+// }
