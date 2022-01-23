@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { GlobalContext } from 'context/GlobalContext';
+import { AppContext } from 'context/AppContext';
 
 import Searchbar from 'components/Searchbar/Searchbar';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
@@ -31,14 +31,11 @@ export default function App() {
   const contextValues = { modalImage, modalAlt, toggleModal };
 
   return (
-    <GlobalContext.Provider value={contextValues}>
+    <AppContext.Provider value={contextValues}>
       <div className={s.app}>
         {showModal && (
           <Modal
-          // src={modalImage}
-          // alt={modalAlt}
-          // onClose={toggleModal}
-          // можно убрать пропы
+          // пропсы приходят из контекста
           />
         )}
         <Searchbar onSubmit={handleFormSubmit} />
@@ -49,6 +46,6 @@ export default function App() {
         />
         <ToastContainer autoClose={4000} theme="colored" transition={Zoom} />
       </div>
-    </GlobalContext.Provider>
+    </AppContext.Provider>
   );
 }

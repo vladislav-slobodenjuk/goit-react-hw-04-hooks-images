@@ -1,12 +1,12 @@
 import { useContext } from 'react';
-import { GlobalContext } from 'context/GlobalContext';
+import { AppContext } from 'context/AppContext';
 import propTypes from 'prop-types';
 
 import s from './ImageGalleryItem.module.scss';
 
 export default function ImageGalleryItem(props) {
   const { webformatURL, largeImageURL, user, id } = props;
-  const { toggleModal } = useContext(GlobalContext);
+  const { toggleModal } = useContext(AppContext);
 
   const alt = `${user}'s photo №${id}`;
 
@@ -27,5 +27,4 @@ ImageGalleryItem.propTypes = {
   largeImageURL: propTypes.string.isRequired,
   user: propTypes.string.isRequired,
   id: propTypes.number.isRequired,
-  // toggleModal: propTypes.func.isRequired,
 };

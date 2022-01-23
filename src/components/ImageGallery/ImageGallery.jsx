@@ -20,24 +20,20 @@ export default function ImageGallery(props) {
   const [error, setError] = useState(null);
 
   const incrPage = () => {
-    // setPage(prev => prev + 1);
-    setPage(page + 1);
+    setPage(prev => prev + 1);
   };
 
   useEffect(() => {
-    if (searchString === '') {
-      // stop effect at mount
-      return;
-    }
-
-    if (searchString.length < 3) {
-      toast.warn('Запрос слишком короткий');
-      return;
-    }
-
-    setStatus('pending');
-
     (async () => {
+      if (searchString === '') return; // stop effect at mount
+
+      if (searchString.length < 3) {
+        toast.warn('Запрос слишком короткий');
+        return;
+      }
+
+      setStatus('pending');
+
       try {
         const fetchResult = await axiosFetch(searchString, page);
 

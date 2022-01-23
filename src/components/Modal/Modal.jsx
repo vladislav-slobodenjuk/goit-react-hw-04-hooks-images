@@ -2,15 +2,14 @@ import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import { useContext } from 'react';
-import { GlobalContext } from 'context/GlobalContext';
-// import propTypes from 'prop-types';
+import { AppContext } from 'context/AppContext';
 
 import s from './Modal.module.scss';
 
 const modalRoot = document.getElementById('modal-root');
 
 export default function Modal() {
-  const { toggleModal, modalImage, modalAlt } = useContext(GlobalContext);
+  const { toggleModal, modalImage, modalAlt } = useContext(AppContext);
 
   const handleKeyDown = e => {
     if (e.code === 'Escape') {
